@@ -1021,7 +1021,7 @@
       }
 
       // TODO: 換成你的 Google Apps Script Web App URL
-      const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyhEJseTksUp9W6pq21SLLlHAVMazAnY14CT3u1ieE2RM5z3xUHTuSqoWR3RkNWNclS/exec';
+      const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw6Z63yhT9sWCW45ObqH983Kzr9IhkbmtjblAf-BmhzMjxC9U6rNqOTXB2m8PafejYY/exec';
 
       const gmail = document.getElementById('gmailInput').value.trim();
       
@@ -1046,17 +1046,11 @@
       const btn = document.getElementById('submitBtn');
       btn.disabled = true; btn.textContent = '送出中…';
 
-      fetch(SCRIPT_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      })
-        .then(res => {
-          if (!res.ok) throw new Error('Response not ok');
-          return res.text();
-        })
-        .then(text => {
-          console.log('Server response:', text);
+      const url = new URL(SCRIPT_URL);
+      Object.entries(payload).forEach(([k, v]) => url.searchParams.append(k, String(v)));
+
+      fetch(url.toString(), { method: 'GET', mode: 'no-cors' })
+        .then(() => {
           showSuccess();
         })
         .catch(err => {
