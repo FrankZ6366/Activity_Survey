@@ -880,12 +880,8 @@
         <div class="success-title">收到了！</div>
         <p class="success-body">
           謝謝你填寫，主辦會陸續整理今年的基本盤。<br/>
-          如果確定要表演，記得到 App 完成正式報名。<br/><br/>
           <strong style="color:var(--gold);">今年海熱浪，一起讓它更好。</strong>
         </p>
-        <div style="margin-top:1.5rem;">
-          <a href="#app" class="btn-primary" style="font-size:0.78rem;">前往 App 報名 →</a>
-        </div>
       </div>
     </div>
   </section>
@@ -894,7 +890,10 @@
   <footer>
     <div class="footer-logo">海熱浪 Hainami</div>
     <div class="footer-sub">HSPMC 海山高中熱音社 年度聯合公演 ✦ 2026</div>
-    <p class="footer-note">有問題請聯絡在校高一、高三社員<br/>頁面資訊如有更新會提前公告</p>
+    <p class="footer-note">
+      有問題請聯絡：在校高一、高三學生，或第11屆 鄭朝富（LINE 0987073863）<br/>
+      頁面資訊如有更新會提前公告
+    </p>
   </footer>
 
   <script>
@@ -1014,7 +1013,7 @@
       }
 
       // TODO: 換成你的 Google Apps Script Web App URL
-      const SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL';
+      const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyhEJseTksUp9W6pq21SLLlHAVMazAnY14CT3u1ieE2RM5z3xUHTuSqoWR3RkNWNclS/exec';
 
       const gmail = document.getElementById('gmailInput').value.trim();
       
@@ -1040,12 +1039,20 @@
       btn.disabled = true; btn.textContent = '送出中…';
 
       fetch(SCRIPT_URL, {
-        method: 'POST', mode: 'no-cors',
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       })
-        .then(() => showSuccess())
-        .catch(() => {
+        .then(res => {
+          if (!res.ok) throw new Error('Response not ok');
+          return res.text();
+        })
+        .then(text => {
+          console.log('Server response:', text);
+          showSuccess();
+        })
+        .catch(err => {
+          console.error('Error:', err);
           btn.disabled = false; btn.textContent = '送出意願調查';
           alert('送出失敗，請稍後再試，或直接聯絡主辦。');
         });
