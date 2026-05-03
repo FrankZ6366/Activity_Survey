@@ -801,16 +801,13 @@
 
         <div class="form-group">
           <label class="form-label">聯絡方式 <span>*</span></label>
-          <div class="contact-row">
-            <select class="form-select" id="fcontactType" style="flex:0 0 100px;">
-              <option value="">選擇類型</option>
-              <option value="LINE">LINE</option>
-              <option value="IG">Instagram</option>
-              <option value="phone">手機</option>
-              <option value="email">Email</option>
-            </select>
-            <input class="form-input" type="text" id="fcontact" placeholder="輸入帳號 / 號碼" style="flex:1; margin-left:0.7rem;" />
+          <div class="radio-group" style="margin-bottom:0.8rem;">
+            <div class="radio-item"><input type="radio" name="contactType" id="ct1" value="LINE" onchange="updateContactPlaceholder(this)" /><label for="ct1">LINE</label></div>
+            <div class="radio-item"><input type="radio" name="contactType" id="ct2" value="IG" onchange="updateContactPlaceholder(this)" /><label for="ct2">IG</label></div>
+            <div class="radio-item"><input type="radio" name="contactType" id="ct3" value="phone" onchange="updateContactPlaceholder(this)" /><label for="ct3">手機</label></div>
+            <div class="radio-item"><input type="radio" name="contactType" id="ct4" value="email" onchange="updateContactPlaceholder(this)" /><label for="ct4">Email</label></div>
           </div>
+          <input class="form-input" type="text" id="fcontact" placeholder="輸入帳號 / 號碼" />
         </div>
 
         <div class="form-group">
@@ -975,6 +972,17 @@
     }
 
     // FORM LOGIC
+    function updateContactPlaceholder(el) {
+      const input = document.getElementById('fcontact');
+      const placeholders = {
+        'LINE': '輸入 LINE ID',
+        'IG': '輸入 IG 帳號',
+        'phone': '輸入手機號碼',
+        'email': '輸入 Email'
+      };
+      input.placeholder = placeholders[el.value] || '輸入帳號 / 號碼';
+    }
+
     function handleIntention(el) {
       // 移掉舊的 bandBlock 邏輯
       // 現在只根據意願決定 Gmail 區塊顯示
@@ -996,11 +1004,11 @@
     function submitForm() {
       const name = document.getElementById('fname').value.trim();
       const year = document.getElementById('fyear').value;
-      const contactType = document.getElementById('fcontactType').value;
+      const contactTypeEl = document.querySelector('input[name="contactType"]:checked');
       const contact = document.getElementById('fcontact').value.trim();
       const intention = document.querySelector('input[name="intention"]:checked');
 
-      if (!name || !year || !contactType || !contact || !intention) {
+      if (!name || !year || !contactTypeEl || !contact || !intention) {
         alert('請填寫必填欄位（姓名、屆別、聯絡方式、參與意願）。');
         return;
       }
@@ -1013,7 +1021,7 @@
       }
 
       // TODO: 換成你的 Google Apps Script Web App URL
-      const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwCaEws_LBWM06pc5idlDgyjm96HIgupMhito4X6TaqawlJZTs3H3CD9O1JdxlCZ83w/exec';
+      const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyhEJseTksUp9W6pq21SLLlHAVMazAnY14CT3u1ieE2RM5z3xUHTuSqoWR3RkNWNclS/exec';
 
       const gmail = document.getElementById('gmailInput').value.trim();
       
@@ -1023,7 +1031,7 @@
       const payload = {
         timestamp: new Date().toLocaleString('zh-TW'),
         name, year,
-        contactType,
+        contactType: contactTypeEl.value,
         contact,
         intention: intention.value,
         gmail: gmail || '',
@@ -1040,11 +1048,15 @@
 
       fetch(SCRIPT_URL, {
         method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'text/plain' },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       })
-        .then(() => {
+        .then(res => {
+          if (!res.ok) throw new Error('Response not ok');
+          return res.text();
+        })
+        .then(text => {
+          console.log('Server response:', text);
           showSuccess();
         })
         .catch(err => {
