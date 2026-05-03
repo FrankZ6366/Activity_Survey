@@ -1040,15 +1040,11 @@
 
       fetch(SCRIPT_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify(payload),
       })
-        .then(res => {
-          if (!res.ok) throw new Error('Response not ok');
-          return res.text();
-        })
-        .then(text => {
-          console.log('Server response:', text);
+        .then(() => {
           showSuccess();
         })
         .catch(err => {
