@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>海熱浪 2025 ✦ 海山高中熱音社年度聯合公演</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&family=Noto+Sans+TC:wght@300;400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --cream: #f5ead6;
+      --ink: #140e06;
+      --red: #bf3b2a;
+      --gold: #d4a030;
+      --muted: #7a6a4f;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--ink);
+      color: var(--cream);
+      font-family: 'Noto Sans TC', sans-serif;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0.35;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(to bottom, rgba(20,14,6,0.97), transparent);
+    }
+    .nav-logo {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.32em;
+      color: var(--gold);
+    }
+    .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+    .nav-links a {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.63rem;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+    @media (max-width: 560px) { .nav-links { display: none; } }
+
+    /* HERO */
+    .hero {
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 6rem 2rem 4rem;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 2px solid rgba(212,160,48,0.35);
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 40%, rgba(192,59,42,0.11) 0%, transparent 70%),
+        repeating-linear-gradient(-52deg, transparent, transparent 36px, rgba(212,160,48,0.03) 36px, rgba(212,160,48,0.03) 38px);
+    }
+    .hero-badge {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.5em;
+      color: var(--gold);
+      border: 1px solid rgba(212,160,48,0.35);
+      padding: 0.35rem 1.2rem;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease 0.1s forwards;
+    }
+    .hero-main {
+      font-family: 'Noto Serif TC', serif;
+      font-weight: 900;
+      line-height: 0.88;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.25s forwards;
+    }
+    .hero-main .l1 {
+      font-size: clamp(5rem, 18vw, 13rem);
+      color: var(--cream);
+      display: block;
+    }
+    .hero-main .l2 {
+      font-size: clamp(1.5rem, 5.5vw, 4rem);
+      color: var(--red);
+      display: block;
+      letter-spacing: 0.06em;
+      margin-top: 0.3rem;
+    }
+    .hero-sub {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: clamp(0.68rem, 1.8vw, 0.88rem);
+      letter-spacing: 0.18em;
+      color: var(--gold);
+      margin-top: 2rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease 0.4s forwards;
+    }
+    .hero-divider {
+      width: min(480px, 80%);
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      margin: 2rem auto;
+      opacity: 0;
+      animation: fadeUp 0.5s ease 0.5s forwards;
+    }
+    .hero-desc {
+      max-width: 460px;
+      font-size: 0.88rem;
+      color: rgba(245,234,214,0.62);
+      line-height: 1.9;
+      opacity: 0;
+      animation: fadeUp 0.6s ease 0.6s forwards;
+    }
+    .hero-cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease 0.75s forwards;
+    }
+    .scroll-cue {
+      position: absolute;
+      bottom: 2rem; left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.35em;
+      color: var(--muted);
+      opacity: 0;
+      animation: fadeUp 0.6s ease 1.3s forwards;
+    }
+    .scroll-cue::after {
+      content: '';
+      display: block;
+      width: 1px; height: 36px;
+      background: linear-gradient(to bottom, var(--muted), transparent);
+      margin: 0.5rem auto 0;
+    }
+
+    /* BUTTONS */
+    .btn-primary {
+      padding: 0.85rem 2.2rem;
+      background: var(--red);
+      color: var(--cream);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.78rem;
+      letter-spacing: 0.2em;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      display: inline-block;
+    }
+    .btn-primary:hover { background: #a8341f; }
+    .btn-primary:active { transform: scale(0.97); }
+    .btn-outline {
+      padding: 0.85rem 2.2rem;
+      border: 1.5px solid var(--gold);
+      color: var(--gold);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.78rem;
+      letter-spacing: 0.2em;
+      text-decoration: none;
+      cursor: pointer;
+      background: transparent;
+      transition: background 0.2s, color 0.2s;
+      display: inline-block;
+    }
+    .btn-outline:hover { background: var(--gold); color: var(--ink); }
+
+    /* APP BANNER */
+    .app-banner {
+      background: rgba(212,160,48,0.06);
+      border-top: 1px solid rgba(212,160,48,0.15);
+      border-bottom: 1px solid rgba(212,160,48,0.15);
+      padding: 1.6rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      text-align: center;
+    }
+    .app-banner-text {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 0.98rem;
+      color: var(--cream);
+      font-weight: 700;
+    }
+    .app-banner-sub { font-size: 0.77rem; color: var(--muted); margin-top: 0.15rem; }
+
+    /* SECTIONS */
+    section { max-width: 860px; margin: 0 auto; padding: 5rem 2rem; }
+    .section-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.42em;
+      color: var(--red);
+      margin-bottom: 0.7rem;
+    }
+    .section-title {
+      font-family: 'Noto Serif TC', serif;
+      font-weight: 900;
+      font-size: clamp(1.9rem, 5vw, 2.85rem);
+      line-height: 1.1;
+      margin-bottom: 1.8rem;
+    }
+    .section-title em { font-style: normal; color: var(--gold); }
+    .full-divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(212,160,48,0.2), transparent);
+    }
+
+    /* STORY */
+    .story-body {
+      font-size: 0.95rem;
+      line-height: 2;
+      color: rgba(245,234,214,0.72);
+      margin-bottom: 1.3rem;
+    }
+    .story-body strong { color: var(--cream); }
+    .story-pull {
+      border-left: 3px solid var(--gold);
+      padding: 1rem 1.5rem;
+      margin: 2rem 0;
+      background: rgba(212,160,48,0.04);
+      font-family: 'Noto Serif TC', serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--cream);
+      line-height: 1.8;
+    }
+
+    /* PHOTO GRID */
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.55rem;
+      margin: 2rem 0;
+    }
+    .photo-slot {
+      aspect-ratio: 4/3;
+      background: rgba(212,160,48,0.05);
+      border: 1px dashed rgba(212,160,48,0.2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      color: var(--muted);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.12em;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .photo-slot:hover { border-color: rgba(212,160,48,0.45); background: rgba(212,160,48,0.09); }
+    .photo-slot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .photo-slot input[type="file"] {
+      position: absolute; inset: 0; opacity: 0;
+      cursor: pointer; width: 100%; height: 100%;
+    }
+    .slot-icon { font-size: 1.4rem; }
+    @media (max-width: 500px) { .photo-grid { grid-template-columns: repeat(2, 1fr); } }
+
+    /* CARDS */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+    .card {
+      border: 1px solid rgba(212,160,48,0.18);
+      padding: 1.4rem;
+      background: rgba(212,160,48,0.02);
+      transition: border-color 0.25s, background 0.25s;
+      position: relative;
+    }
+    .card:hover { border-color: var(--gold); background: rgba(212,160,48,0.07); }
+    .card-num {
+      position: absolute; top: 0.8rem; right: 0.8rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 1.8rem;
+      color: rgba(212,160,48,0.07);
+      font-weight: bold; line-height: 1;
+    }
+    .card-icon { font-size: 1.4rem; margin-bottom: 0.7rem; }
+    .card-title { font-family: 'Noto Serif TC', serif; font-weight: 700; font-size: 0.95rem; color: var(--cream); margin-bottom: 0.4rem; }
+    .card-body { font-size: 0.8rem; color: var(--muted); line-height: 1.7; }
+
+    /* TIMELINE */
+    .timeline { position: relative; padding-left: 2rem; }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0.5rem; bottom: 0.5rem;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--gold), var(--red), transparent);
+    }
+    .timeline-item {
+      position: relative;
+      margin-bottom: 2.5rem;
+      padding-left: 1.5rem;
+      opacity: 0;
+      transform: translateX(-10px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .timeline-item.visible { opacity: 1; transform: none; }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -2rem; top: 0.4rem;
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      background: var(--gold);
+      border: 2px solid var(--ink);
+      box-shadow: 0 0 0 2px var(--gold);
+    }
+    .timeline-item.star::before {
+      background: var(--red);
+      box-shadow: 0 0 0 2px var(--red), 0 0 10px rgba(191,59,42,0.55);
+    }
+    .timeline-date { font-family: 'Share Tech Mono', monospace; font-size: 0.7rem; letter-spacing: 0.2em; color: var(--gold); margin-bottom: 0.3rem; }
+    .timeline-event { font-family: 'Noto Serif TC', serif; font-weight: 700; font-size: 1.1rem; color: var(--cream); margin-bottom: 0.35rem; }
+    .timeline-item.star .timeline-event { color: #e05545; }
+    .timeline-desc { font-size: 0.83rem; color: var(--muted); line-height: 1.75; }
+
+    /* NOTICE */
+    .notice { border-left: 3px solid var(--red); background: rgba(191,59,42,0.06); padding: 1.1rem 1.4rem; margin: 1.5rem 0; }
+    .notice-label { font-family: 'Share Tech Mono', monospace; font-size: 0.65rem; letter-spacing: 0.3em; color: var(--red); margin-bottom: 0.4rem; }
+    .notice p { font-size: 0.84rem; line-height: 1.8; color: var(--cream); }
+
+    /* SUBSIDY */
+    .subsidy-box {
+      border: 1px solid rgba(212,160,48,0.28);
+      padding: 1.6rem;
+      margin-top: 1.5rem;
+      background: rgba(212,160,48,0.03);
+      position: relative;
+    }
+    .subsidy-box::before {
+      content: '政府補助資訊';
+      position: absolute;
+      top: -0.62rem; left: 1.2rem;
+      background: var(--ink);
+      padding: 0 0.5rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.22em;
+      color: var(--gold);
+    }
+    .subsidy-box p { font-size: 0.84rem; color: var(--muted); line-height: 1.85; }
+    .subsidy-box a { color: var(--gold); }
+
+    /* FORM */
+    .form-wrapper {
+      background: rgba(245,234,214,0.025);
+      border: 1px solid rgba(212,160,48,0.16);
+      padding: 2.5rem;
+      margin-top: 1.5rem;
+    }
+    .form-intro { font-size: 0.88rem; color: var(--muted); line-height: 1.85; margin-bottom: 2rem; }
+    .form-group { margin-bottom: 1.5rem; }
+    .form-label { display: block; font-family: 'Share Tech Mono', monospace; font-size: 0.67rem; letter-spacing: 0.25em; color: var(--gold); margin-bottom: 0.45rem; }
+    .form-label span { color: var(--red); }
+    .form-input, .form-select, .form-textarea {
+      width: 100%;
+      background: rgba(20,14,6,0.85);
+      border: 1px solid rgba(212,160,48,0.2);
+      color: var(--cream);
+      padding: 0.7rem 0.95rem;
+      font-family: 'Noto Sans TC', sans-serif;
+      font-size: 0.88rem;
+      outline: none;
+      transition: border-color 0.2s;
+      appearance: none;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--gold); }
+    .form-select option { background: #140e06; }
+    .form-textarea { resize: vertical; min-height: 85px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 520px) { .form-row { grid-template-columns: 1fr; } }
+    
+    .contact-row { display: flex; gap: 0.7rem; align-items: stretch; }
+    .radio-group { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 0.2rem; }
+    .radio-item { display: flex; align-items: center; gap: 0.45rem; cursor: pointer; }
+    .radio-item input { accent-color: var(--gold); width: 15px; height: 15px; cursor: pointer; }
+    .radio-item label { font-size: 0.84rem; color: var(--cream); cursor: pointer; }
+    .form-hint { margin-top: 0.35rem; font-size: 0.72rem; color: var(--muted); }
+    .cond-block { display: none; margin-top: 1rem; padding-left: 1rem; border-left: 2px solid rgba(212,160,48,0.15); }
+    .cond-block.show { display: block; }
+    .sm-divider { width: 100%; height: 1px; background: rgba(212,160,48,0.1); margin: 1.5rem 0; }
+
+    /* VOTE OPTIONS */
+    .vote-group { margin-bottom: 2.5rem; }
+    .vote-group-title {
+      font-family: 'Noto Serif TC', serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--cream);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .vote-group-title::after { content: ''; flex: 1; height: 1px; background: rgba(212,160,48,0.12); }
+    .vote-options { display: flex; flex-direction: column; gap: 0.55rem; }
+    .vote-option {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.88rem 1.1rem;
+      border: 1px solid rgba(212,160,48,0.14);
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .vote-option:hover { border-color: rgba(212,160,48,0.38); background: rgba(212,160,48,0.04); }
+    .vote-option input[type="radio"] { accent-color: var(--gold); width: 15px; height: 15px; flex-shrink: 0; cursor: pointer; }
+    .vote-option label { font-size: 0.88rem; color: var(--cream); cursor: pointer; flex: 1; line-height: 1.5; }
+    .vote-option .sub { display: block; font-size: 0.71rem; color: var(--muted); margin-top: 0.12rem; }
+
+    /* SUBMIT */
+    .btn-submit {
+      padding: 0.88rem 2.5rem;
+      background: var(--red);
+      color: var(--cream);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .btn-submit:hover { background: #a8341f; }
+    .btn-submit:active { transform: scale(0.97); }
+    .btn-submit:disabled { background: var(--muted); cursor: not-allowed; }
+
+    /* SUCCESS */
+    .form-success { display: none; text-align: center; padding: 3rem 1rem; }
+    .form-success.show { display: block; }
+    .success-emoji { font-size: 3rem; margin-bottom: 1rem; }
+    .success-title { font-family: 'Noto Serif TC', serif; font-weight: 900; font-size: 1.8rem; color: var(--gold); margin-bottom: 0.6rem; }
+    .success-body { font-size: 0.88rem; color: var(--muted); line-height: 1.9; }
+
+    /* APP SECTION */
+    .app-card {
+      border: 1.5px solid var(--gold);
+      padding: 2.2rem;
+      display: flex;
+      gap: 2rem;
+      align-items: flex-start;
+      margin-top: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .app-card::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 130px; height: 130px;
+      background: radial-gradient(circle at top right, rgba(212,160,48,0.09), transparent 70%);
+      pointer-events: none;
+    }
+    .app-icon { font-size: 2.8rem; flex-shrink: 0; }
+    .app-content { flex: 1; }
+    .app-title { font-family: 'Noto Serif TC', serif; font-weight: 900; font-size: 1.3rem; color: var(--cream); margin-bottom: 0.5rem; }
+    .app-desc { font-size: 0.84rem; color: var(--muted); line-height: 1.8; margin-bottom: 1.2rem; }
+    .app-steps { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.4rem; }
+    .app-step { display: flex; align-items: flex-start; gap: 0.7rem; font-size: 0.83rem; color: rgba(245,234,214,0.68); line-height: 1.5; }
+    .app-step-num {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.63rem;
+      color: var(--gold);
+      border: 1px solid rgba(212,160,48,0.38);
+      width: 1.35rem; height: 1.35rem;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 0.05rem;
+    }
+    @media (max-width: 520px) { .app-card { flex-direction: column; gap: 1rem; } }
+
+    /* FOOTER */
+    footer { border-top: 1px solid rgba(212,160,48,0.1); padding: 2.5rem 2rem; text-align: center; }
+    .footer-logo { font-family: 'Noto Serif TC', serif; font-weight: 900; font-size: 1.2rem; color: var(--gold); margin-bottom: 0.4rem; }
+    .footer-sub { font-family: 'Share Tech Mono', monospace; font-size: 0.62rem; letter-spacing: 0.3em; color: var(--muted); margin-bottom: 0.5rem; }
+    .footer-note { font-size: 0.73rem; color: rgba(122,106,79,0.5); line-height: 1.7; }
+
+    /* REVEAL */
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+    /* MYSTERY BOX */
+    .mystery-box {
+      border: 1px dashed rgba(212,160,48,0.4);
+      background: rgba(212,160,48,0.04);
+      padding: 1.4rem 1.8rem;
+      margin: 2rem 0;
+      position: relative;
+    }
+    .mystery-title {
+      font-family: 'Noto Serif TC', serif;
+      font-weight: 900;
+      font-size: 1.05rem;
+      color: var(--gold);
+      margin-bottom: 0.6rem;
+    }
+    .mystery-box p {
+      font-size: 0.86rem;
+      color: rgba(245,234,214,0.7);
+      line-height: 1.85;
+    }
+    .mystery-sub {
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .app-check-reminder {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      padding: 0.9rem 1rem;
+      border: 1px solid rgba(212,160,48,0.2);
+      margin-bottom: 1.5rem;
+      cursor: pointer;
+    }
+    .app-check-reminder input { accent-color: var(--gold); width: 15px; height: 15px; flex-shrink: 0; margin-top: 0.15rem; cursor: pointer; }
+    .app-check-reminder label { font-size: 0.83rem; color: rgba(245,234,214,0.8); line-height: 1.5; cursor: pointer; }
+
+    /* APP INLINE IN FORM */
+    .app-inline {
+      border: 1px solid rgba(212,160,48,0.3);
+      background: rgba(212,160,48,0.04);
+      padding: 1.3rem 1.5rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      gap: 1.2rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .app-inline-text { flex: 1; min-width: 180px; }
+    .app-inline-title {
+      font-family: 'Noto Serif TC', serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--cream);
+      margin-bottom: 0.25rem;
+    }
+    .app-inline-sub { font-size: 0.78rem; color: var(--muted); line-height: 1.6; }
+    .app-inline-check {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.7rem;
+      cursor: pointer;
+    }
+    .app-inline-check input { accent-color: var(--gold); width: 15px; height: 15px; cursor: pointer; }
+    .app-inline-check label { font-size: 0.82rem; color: var(--cream); cursor: pointer; }
+
+    /* GMAIL VERIFY */
+    .gmail-verify-block {
+      border: 1px solid rgba(212,160,48,0.3);
+      background: rgba(212,160,48,0.04);
+      padding: 1.4rem 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .gmail-verify-label {
+      font-family: 'Noto Serif TC', serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--cream);
+      margin-bottom: 0.5rem;
+    }
+    .gmail-verify-desc {
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+    .gmail-verify-desc a { color: var(--gold); text-decoration: none; }
+    .gmail-verify-desc a:hover { text-decoration: underline; }
+    .gmail-input-row {
+      display: flex;
+      gap: 0.7rem;
+      align-items: stretch;
+    }
+    .gmail-input-row .form-input { flex: 1; }
+    .btn-verify {
+      background: transparent;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      padding: 0 1.2rem;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.2s, color 0.2s;
+      flex-shrink: 0;
+    }
+    .btn-verify:hover { background: var(--gold); color: var(--ink); }
+    .btn-verify:disabled { opacity: 0.5; cursor: not-allowed; }
+    .verify-result {
+      margin-top: 0.7rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+      min-height: 1.2rem;
+    }
+    .verify-result.ok  { color: #4caf50; }
+    .verify-result.err { color: var(--red); }
+    .verify-result.pending { color: var(--muted); }
+
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-logo">HSPMC ✦ HAINAMI 2026</div>
+    <ul class="nav-links">
+      <li><a href="#story">關於海熱浪</a></li>
+      <li><a href="#schedule">時間規劃</a></li>
+      <li><a href="#survey">參與意願</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge">2026 ✦ HSPMC × HAINAMI</div>
+    <h1 class="hero-main">
+      <span class="l1">海熱浪</span>
+      <span class="l2">海山高中熱音社 年度聯合公演</span>
+    </h1>
+    <div class="hero-sub">HSPMC ✦ HAINAMI ✦ 各屆同台 ✦ 年度公演</div>
+    <div class="hero-divider"></div>
+    <p class="hero-desc">
+      每年夏天，不管畢業多久，<br/>
+      海山熱音人都會回來——<br/>
+      一起站上那個舞台。
+    </p>
+    <div class="hero-cta">
+      <a href="#survey" class="btn-primary">填寫參與意願 →</a>
+    </div>
+    <div class="scroll-cue">SCROLL</div>
+  </div>
+
+  <!-- STORY -->
+  <section id="story">
+    <div class="section-label reveal">關於這個活動</div>
+    <h2 class="section-title reveal">超過二十年，<br/><em>海山熱音人的夏天。</em></h2>
+
+    <p class="story-body reveal">
+      海熱浪（Hainami）由 HSPMC 海山高中熱音社創立，走到今年已超過二十個年頭。
+      它不只是一個表演活動——它是每一個曾加入海山熱音的人，最重要的共同記憶之一。
+    </p>
+
+    <p class="story-body reveal">
+      在學的學弟妹，這裡<strong>保障你上台表演的機會</strong>，不用擔心沒有舞台。
+      畢業的學長姐，不管出社會多久，每年還是會期待這個夏天，
+      找到熟悉的人，一起拿起樂器，再玩一次。
+    </p>
+
+    <div class="story-pull reveal">
+      「即使畢了業，出了社會，每年還是很期待。<br/>這大概就是海熱浪的意義。」
+    </div>
+
+  </section>
+
+  <div class="full-divider"></div>
+
+  <!-- SCHEDULE -->
+  <section id="schedule">
+    <div class="section-label reveal">今年規劃</div>
+    <h2 class="section-title reveal">先掌握<em>這幾個時間點</em></h2>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-date">現在 ─ 5月底</div>
+        <div class="timeline-event">參與意願調查</div>
+        <div class="timeline-desc">填寫本頁表單，掌握今年參與規模、組團狀況與預計曲目數，五月底前完成統計。</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">6月</div>
+        <div class="timeline-event">開始找場地 ／ 費用試算</div>
+        <div class="timeline-desc">根據調查結果確認規模，開始聯絡場地並試算費用。確切日期確認後公告。</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">7月1日起</div>
+        <div class="timeline-event">申請政府補助（第二階段開放）</div>
+        <div class="timeline-desc">
+          新北市青年局「多元文化補助」第二階段自 7/1 開始受理，活動開始前一個月須提出申請。
+          主辦在確認場地與日期後，盡快備妥資料送件。申請進度另行公告。
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">7月中 ─ 7月底</div>
+        <div class="timeline-event">社員交流日</div>
+        <div class="timeline-desc">
+          租借大間練團室，大家演給彼此看、互相交流。順便確認一下練習狀況，看看有沒有可以相互協助的地方。
+          重點是玩得開心，不用有壓力。詳細時間地點另行公告，費用獨立計算。
+        </div>
+      </div>
+      <div class="timeline-item star">
+        <div class="timeline-date">8月15日（六）/ 16日（日）/ 22日（六）/ 23日（日）</div>
+        <div class="timeline-event">✦ 海熱浪正式演出</div>
+        <div class="timeline-desc">
+          年度重頭戲，各團輪番登台。以上四個日期擇一，確切日期由大家投票決定，確認後公告。
+        </div>
+      </div>
+    </div>
+
+    <div class="notice reveal">
+      <div class="notice-label">⚠ 重要提醒</div>
+      <p>確認參與後如有異動，請盡早告知主辦。臨時退出會影響場地費用分攤與其他團的排程，感謝大家互相尊重。</p>
+    </div>
+
+    <div class="subsidy-box reveal">
+      <p>
+        今年主辦會申請<strong style="color:var(--cream);">新北市青年局多元文化補助</strong>（第二階段 7/1 開放受理）。
+        一般每案最高補助 2 萬元；若符合特定條件（如具公益性質、三組以上跨校聯合辦理等），以學校名義申請可到 10 萬元。
+        涵蓋場地租借、設備、文宣等費用，申請成功的話能有效降低分攤金額。主辦確認場地日期後會盡快送件，進度另行公告。<br/>
+        <a href="https://www.youth.ntpc.gov.tw/youth/ch/app/artwebsite/view?module=artwebsite&id=165&serno=3a6bb667-b734-4786-b951-80664bb99720" target="_blank" rel="noopener">→ 新北市青年局多元文化補助說明</a>
+      </p>
+    </div>
+
+    <div class="mystery-box reveal">
+      <div class="mystery-title">🧧 紅包送幸福</div>
+      <p>每年海熱浪，總會有幾位神出鬼沒的主委突然現身。<br/>
+      他們從哪裡來、要去哪裡——沒人說得清楚。<br/>
+      <span class="mystery-sub">今年，也許你也會遇到。</span></p>
+    </div>
+  </section>
+
+  <!-- SURVEY -->
+  <section id="survey">
+    <div class="section-label reveal">參與意願調查 ✦ 正式報名</div>
+    <h2 class="section-title reveal">今年，<em>你要一起玩嗎？</em></h2>
+
+    <div class="app-card reveal">
+      <div class="app-icon">📱</div>
+      <div class="app-content">
+        <div class="app-title">確定要演出？先到 App 完成正式報名</div>
+        <div class="app-desc">Hainami App 是社員找人、開歌徵團的平台。瀏覽成員資料、依樂器或技能篩選，開歌貼文招募隊友，或直接報名別人的歌曲。確定要上台的成員請先完成帳號註冊。還在考慮中的人先填下面的意願調查就好，不強求。</div>
+        <a href="https://hspmc---hainami---prod-signed.web.app/" target="_blank" rel="noopener" class="btn-primary" style="font-size:0.78rem;">前往 Hainami App →</a>
+      </div>
+    </div>
+
+    <div class="form-wrapper reveal">
+      <p class="form-intro">
+        <strong style="color:var(--red);">⚠ 重要：選「確定要表演」就等同報名承諾。</strong><br/>
+        這次調查幫助主辦掌握今年的參演規模，尤其是表演者人數，會大大影響場地選擇和預算評估。<br/>
+        <strong style="color:var(--cream);">如果確定了就請負責到底，臨時取消會影響整個活動的安排。</strong><br/>
+        考慮中或只想來看也歡迎填寫。目標五月底完成統計，請盡量提早填！
+      </p>
+
+      <div id="surveyForm">
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="fname">姓名 <span>*</span></label>
+            <input class="form-input" type="text" id="fname" placeholder="你的名字" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="fyear">屆別 <span>*</span></label>
+            <input class="form-input" type="number" id="fyear" placeholder="請輸入屆數（如 25, 24, 8...）" min="1" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">聯絡方式 <span>*</span></label>
+          <div class="contact-row">
+            <select class="form-select" id="fcontactType" style="flex:0 0 100px;">
+              <option value="">選擇類型</option>
+              <option value="LINE">LINE</option>
+              <option value="IG">Instagram</option>
+              <option value="phone">手機</option>
+              <option value="email">Email</option>
+            </select>
+            <input class="form-input" type="text" id="fcontact" placeholder="輸入帳號 / 號碼" style="flex:1; margin-left:0.7rem;" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">參與意願 <span>*</span></label>
+          <div class="radio-group">
+            <div class="radio-item"><input type="radio" name="intention" id="i1" value="confirm" onchange="handleIntention(this)" /><label for="i1">確定要表演</label></div>
+            <div class="radio-item"><input type="radio" name="intention" id="i2" value="maybe" onchange="handleIntention(this)" /><label for="i2">考慮中</label></div>
+            <div class="radio-item"><input type="radio" name="intention" id="i3" value="watch" onchange="handleIntention(this)" /><label for="i3">只來看演出</label></div>
+            <div class="radio-item"><input type="radio" name="intention" id="i4" value="no" onchange="handleIntention(this)" /><label for="i4">今年不參加</label></div>
+          </div>
+        </div>
+
+        <!-- Gmail 驗證（確定要表演才顯示強制驗證） -->
+        <div id="gmailConfirmBlock" class="gmail-verify-block" style="display:none;">
+          <div class="gmail-verify-label">📱 Hainami App 帳號驗證 <span style="color:var(--red);">*</span></div>
+          <p class="gmail-verify-desc">
+            你選擇了「確定要表演」，請先至 <a href="https://hspmc---hainami---prod-signed.web.app/" target="_blank" rel="noopener" style="color:var(--red); font-weight:700;">Hainami App 馬上註冊 →</a> 以 Google 帳號完成註冊，再輸入你的 Gmail 驗證。
+          </p>
+          <div class="gmail-input-row">
+            <input class="form-input" type="email" id="gmailInput" placeholder="your@gmail.com" style="margin:0;" />
+            <button class="btn-verify" id="verifyBtn" onclick="verifyGmail()">驗證</button>
+          </div>
+          <div id="verifyResult" class="verify-result"></div>
+        </div>
+
+        <!-- App 提示（其他選項） -->
+        <div id="gmailOtherBlock" class="app-check-reminder" style="display:none;">
+          <div style="flex:1;">
+            <strong>💡 提示：</strong> 即使沒有要上台，也可以到 <a href="https://hspmc---hainami---prod-signed.web.app/" target="_blank" rel="noopener" style="color:var(--gold);">Hainami App</a> 先看看每年的狀況，之後再決定要不要參加！
+          </div>
+        </div>
+
+        <!-- 日期投票 -->
+        <div class="vote-group">
+          <div class="vote-group-title">演出日期投票<span class="sub">（可複選，全勾也可以）</span></div>
+          <div class="vote-options">
+            <div class="vote-option"><input type="checkbox" name="date_vote" id="d1" value="aug15_sat" /><label for="d1">8月15日（六）<span class="sub">倒數第三週 週六</span></label></div>
+            <div class="vote-option"><input type="checkbox" name="date_vote" id="d2" value="aug16_sun" /><label for="d2">8月16日（日）<span class="sub">倒數第三週 週日</span></label></div>
+            <div class="vote-option"><input type="checkbox" name="date_vote" id="d3" value="aug22_sat" /><label for="d3">8月22日（六）<span class="sub">倒數第二週 週六</span></label></div>
+            <div class="vote-option"><input type="checkbox" name="date_vote" id="d4" value="aug23_sun" /><label for="d4">8月23日（日）<span class="sub">倒數第二週 週日</span></label></div>
+          </div>
+        </div>
+
+        <!-- 費用投票 -->
+        <div class="vote-group">
+          <div class="vote-group-title">費用分攤方式投票</div>
+          <div class="vote-options">
+            <div class="vote-option"><input type="radio" name="cost_vote" id="c1" value="equal" /><label for="c1">人頭平均分攤<span class="sub">大家開心最重要，不管唱幾首都一樣付</span></label></div>
+            <div class="vote-option"><input type="radio" name="cost_vote" id="c2" value="by_song" /><label for="c2">依演出曲數分攤<span class="sub">唱越多付越多，相對公平，計算稍複雜</span></label></div>
+            <div class="vote-option"><input type="radio" name="cost_vote" id="c3" value="no_opinion" /><label for="c3">沒意見<span class="sub">都可以，隨便啦</span></label></div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="fnote">其他備註 ／ 想說的話</label>
+          <textarea class="form-textarea" id="fnote" placeholder="想找的樂手、特殊需求、或想對主辦說的話都可以寫這裡"></textarea>
+        </div>
+
+        <button class="btn-submit" id="submitBtn" onclick="submitForm()">送出意願調查</button>
+        <p class="form-hint" style="margin-top:0.8rem;">
+          * 此調查由主辦統一彙整，不公開個人資料。確定參與者請至 App 完成正式報名。
+        </p>
+      </div>
+
+      <div class="form-success" id="formSuccess">
+        <div class="success-emoji">🎸</div>
+        <div class="success-title">收到了！</div>
+        <p class="success-body">
+          謝謝你填寫，主辦會陸續整理今年的基本盤。<br/>
+          如果確定要表演，記得到 App 完成正式報名。<br/><br/>
+          <strong style="color:var(--gold);">今年海熱浪，一起讓它更好。</strong>
+        </p>
+        <div style="margin-top:1.5rem;">
+          <a href="#app" class="btn-primary" style="font-size:0.78rem;">前往 App 報名 →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">海熱浪 Hainami</div>
+    <div class="footer-sub">HSPMC 海山高中熱音社 年度聯合公演 ✦ 2026</div>
+    <p class="footer-note">有問題請聯絡在校高一、高三社員<br/>頁面資訊如有更新會提前公告</p>
+  </footer>
+
+  <script>
+    // SCROLL REVEAL
+    const obs = new IntersectionObserver(
+      es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+      { threshold: 0.1 }
+    );
+    document.querySelectorAll('.reveal, .timeline-item').forEach(el => obs.observe(el));
+
+    // PHOTO PREVIEW
+    function loadPhoto(input) {
+      if (!input.files || !input.files[0]) return;
+      const slot = input.closest('.photo-slot');
+      const r = new FileReader();
+      r.onload = e => {
+        let img = slot.querySelector('img');
+        if (!img) { img = document.createElement('img'); slot.appendChild(img); }
+        img.src = e.target.result;
+        slot.querySelector('.slot-icon') && (slot.querySelector('.slot-icon').style.display = 'none');
+        slot.querySelectorAll('div:not(img)').forEach(d => d.style.display = 'none');
+      };
+      r.readAsDataURL(input.files[0]);
+    }
+
+    // FIREBASE CONFIG
+    const FIREBASE_API_KEY = 'AIzaSyDGZ0-Zg0SLtlO5oOhBbUD5cZSa81HrUOI';
+    const PROJECT_ID = 'hspmc---hainami---prod-signed';
+    let gmailVerified = false; // null = 未驗證, true = 已註冊, false = 未通過
+
+    async function sha256(str) {
+      const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str.toLowerCase().trim()));
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    async function verifyGmail() {
+      const email = document.getElementById('gmailInput').value.trim();
+      const resultEl = document.getElementById('verifyResult');
+      const btn = document.getElementById('verifyBtn');
+
+      if (!email) { resultEl.textContent = '請輸入 Gmail'; resultEl.className = 'verify-result err'; return; }
+
+      resultEl.textContent = '查詢中…';
+      resultEl.className = 'verify-result pending';
+      btn.disabled = true;
+
+      try {
+        const hash = await sha256(email);
+        const res = await fetch(
+          `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents:runQuery?key=${FIREBASE_API_KEY}`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              structuredQuery: {
+                from: [{ collectionId: 'registeredEmails' }],
+                where: { fieldFilter: { field: { fieldPath: 'emailHash' }, op: 'EQUAL', value: { stringValue: hash } } },
+                limit: 1
+              }
+            })
+          }
+        );
+        const data = await res.json();
+        const exists = Array.isArray(data) && data[0]?.document;
+        if (exists) {
+          gmailVerified = true;
+          resultEl.textContent = '✅ 驗證成功，你已在 App 完成註冊！';
+          resultEl.className = 'verify-result ok';
+        } else {
+          gmailVerified = false;
+          resultEl.textContent = '❌ 查無此帳號，請先至 Hainami App 以此 Gmail 完成 Google 登入。';
+          resultEl.className = 'verify-result err';
+        }
+      } catch (e) {
+        resultEl.textContent = '查詢失敗，請稍後再試。';
+        resultEl.className = 'verify-result err';
+      }
+      btn.disabled = false;
+    }
+
+    // FORM LOGIC
+    function handleIntention(el) {
+      // 移掉舊的 bandBlock 邏輯
+      // 現在只根據意願決定 Gmail 區塊顯示
+      const confirmBlock = document.getElementById('gmailConfirmBlock');
+      const otherBlock = document.getElementById('gmailOtherBlock');
+      
+      if (el.value === 'confirm') {
+        // 確定要表演：顯示強制驗證區塊
+        confirmBlock.style.display = 'block';
+        otherBlock.style.display = 'none';
+      } else {
+        // 其他選項：顯示提示區塊
+        confirmBlock.style.display = 'none';
+        otherBlock.style.display = 'flex';
+      }
+    }
+
+    // SUBMIT
+    function submitForm() {
+      const name = document.getElementById('fname').value.trim();
+      const year = document.getElementById('fyear').value;
+      const contactType = document.getElementById('fcontactType').value;
+      const contact = document.getElementById('fcontact').value.trim();
+      const intention = document.querySelector('input[name="intention"]:checked');
+
+      if (!name || !year || !contactType || !contact || !intention) {
+        alert('請填寫必填欄位（姓名、屆別、聯絡方式、參與意願）。');
+        return;
+      }
+
+      // 確定演出者必須通過 Gmail 驗證
+      if (intention.value === 'confirm' && !gmailVerified) {
+        alert('你選擇了「確定要表演」，請先完成上方的 Gmail 驗證。');
+        document.getElementById('gmailInput').focus();
+        return;
+      }
+
+      // TODO: 換成你的 Google Apps Script Web App URL
+      const SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL';
+
+      const gmail = document.getElementById('gmailInput').value.trim();
+      
+      // 日期投票：取所有勾選的值（checkbox）
+      const dateVotes = Array.from(document.querySelectorAll('input[name="date_vote"]:checked')).map(el => el.value);
+      
+      const payload = {
+        timestamp: new Date().toLocaleString('zh-TW'),
+        name, year,
+        contactType,
+        contact,
+        intention: intention.value,
+        gmail: gmail || '',
+        gmailVerified: gmailVerified,
+        date_votes: dateVotes.join(', ') || '',
+        cost_vote: (document.querySelector('input[name="cost_vote"]:checked') || {}).value || '',
+        note: document.getElementById('fnote').value.trim(),
+      };
+
+      if (SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL') { showSuccess(); return; }
+
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = true; btn.textContent = '送出中…';
+
+      fetch(SCRIPT_URL, {
+        method: 'POST', mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+        .then(() => showSuccess())
+        .catch(() => {
+          btn.disabled = false; btn.textContent = '送出意願調查';
+          alert('送出失敗，請稍後再試，或直接聯絡主辦。');
+        });
+    }
+
+    function showSuccess() {
+      document.getElementById('surveyForm').style.display = 'none';
+      document.getElementById('formSuccess').classList.add('show');
+    }
+  </script>
+</body>
+</html>
