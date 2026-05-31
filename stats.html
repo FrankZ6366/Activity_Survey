@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>海熱浪 2026 ✦ 報名統計</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&family=Noto+Sans+TC:wght@300;400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --cream: #f5ead6;
+      --ink: #140e06;
+      --red: #bf3b2a;
+      --gold: #d4a030;
+      --muted: #7a6a4f;
+      --green: #4caf78;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--ink);
+      color: var(--cream);
+      font-family: 'Noto Sans TC', sans-serif;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0.35;
+    }
+
+    /* ── NAV ── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(20, 14, 6, 0.97);
+      border-bottom: 1px solid rgba(212, 160, 48, 0.15);
+      backdrop-filter: blur(8px);
+    }
+    .nav-logo {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.32em;
+      color: var(--gold);
+    }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+    .back-link {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.63rem;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .back-link:hover { color: var(--gold); }
+    .refresh-btn {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.63rem;
+      letter-spacing: 0.18em;
+      color: var(--gold);
+      background: transparent;
+      border: 1px solid rgba(212, 160, 48, 0.35);
+      padding: 0.3rem 0.8rem;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .refresh-btn:hover { background: var(--gold); color: var(--ink); }
+
+    /* ── MAIN ── */
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 3rem 2rem 5rem;
+    }
+
+    /* ── PAGE TITLE ── */
+    .page-title-block {
+      margin-bottom: 2.5rem;
+      border-bottom: 1px solid rgba(212, 160, 48, 0.15);
+      padding-bottom: 1.5rem;
+    }
+    .page-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.42em;
+      color: var(--red);
+      margin-bottom: 0.5rem;
+    }
+    .page-title {
+      font-family: 'Noto Serif TC', serif;
+      font-weight: 900;
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      line-height: 1.15;
+      color: var(--cream);
+    }
+    .page-title em { font-style: normal; color: var(--gold); }
+    .last-updated {
+      margin-top: 0.7rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .status-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      display: inline-block;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    .status-dot.loading { background: var(--gold); animation: pulse 0.6s ease-in-out infinite; }
+    .status-dot.error { background: var(--red); animation: none; }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    /* ── LOADING / ERROR ── */
+    .loading-block {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 3rem;
+      justify-content: center;
+      color: var(--muted);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.78rem;
+      letter-spacing: 0.2em;
+    }
+    .error-block {
+      border: 1px solid rgba(191, 59, 42, 0.4);
+      background: rgba(191, 59, 42, 0.06);
+      padding: 1.5rem;
+      color: var(--red);
+      font-size: 0.88rem;
+      line-height: 1.8;
+      display: none;
+    }
+    .error-block.show { display: block; }
+
+    /* ── SUMMARY CARDS ── */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1px;
+      background: rgba(212, 160, 48, 0.08);
+      border: 1px solid rgba(212, 160, 48, 0.12);
+      margin-bottom: 2rem;
+    }
+    .summary-card {
+      background: var(--ink);
+      padding: 1.4rem 1.2rem;
+      text-align: center;
+      transition: background 0.2s;
+    }
+    .summary-card:hover { background: rgba(212, 160, 48, 0.04); }
+    .summary-num {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 2.4rem;
+      line-height: 1;
+      font-weight: bold;
+      margin-bottom: 0.4rem;
+    }
+    .summary-num.total { color: var(--cream); }
+    .summary-num.confirm { color: var(--green); }
+    .summary-num.maybe { color: var(--gold); }
+    .summary-num.watch { color: #7acfe0; }
+    .summary-num.no { color: var(--muted); }
+    .summary-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.25em;
+      color: var(--muted);
+    }
+    .summary-sub {
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-top: 0.2rem;
+      opacity: 0.7;
+    }
+
+    /* ── SECTION BLOCK ── */
+    .stat-section {
+      margin-bottom: 2.2rem;
+      border: 1px solid rgba(212, 160, 48, 0.12);
+      background: rgba(245, 234, 214, 0.015);
+    }
+    .stat-section-head {
+      padding: 0.9rem 1.4rem;
+      border-bottom: 1px solid rgba(212, 160, 48, 0.1);
+      display: flex;
+      align-items: baseline;
+      gap: 0.8rem;
+    }
+    .stat-section-title {
+      font-family: 'Noto Serif TC', serif;
+      font-weight: 700;
+      font-size: 0.92rem;
+      color: var(--cream);
+    }
+    .stat-section-sub {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+    }
+    .stat-section-body { padding: 1.2rem 1.4rem; }
+
+    /* ── BAR CHART ── */
+    .bar-row {
+      display: grid;
+      grid-template-columns: 8rem 1fr 4rem;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 0.85rem;
+    }
+    .bar-row:last-child { margin-bottom: 0; }
+    .bar-label {
+      font-size: 0.82rem;
+      color: var(--cream);
+      text-align: right;
+      line-height: 1.4;
+    }
+    .bar-label .bar-label-sub {
+      display: block;
+      font-size: 0.66rem;
+      color: var(--muted);
+    }
+    .bar-track {
+      height: 22px;
+      background: rgba(212, 160, 48, 0.07);
+      border: 1px solid rgba(212, 160, 48, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--gold), rgba(212, 160, 48, 0.6));
+      transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 0%;
+    }
+    .bar-fill.date { background: linear-gradient(90deg, #bf3b2a, rgba(191, 59, 42, 0.55)); }
+    .bar-fill.cost { background: linear-gradient(90deg, #7acfe0, rgba(122, 207, 224, 0.5)); }
+    .bar-count {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .bar-count strong { color: var(--cream); }
+
+    /* ── WINNER BADGE ── */
+    .winner-badge {
+      display: inline-block;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.52rem;
+      letter-spacing: 0.15em;
+      color: var(--ink);
+      background: var(--gold);
+      padding: 0.1rem 0.4rem;
+      margin-left: 0.4rem;
+      vertical-align: middle;
+    }
+
+    /* ── PERFORMERS LIST ── */
+    .performers-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .performer-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      border: 1px solid rgba(76, 175, 120, 0.3);
+      background: rgba(76, 175, 120, 0.05);
+      padding: 0.35rem 0.75rem;
+      font-size: 0.82rem;
+      color: var(--cream);
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .performer-tag:hover { border-color: rgba(76, 175, 120, 0.55); background: rgba(76, 175, 120, 0.1); }
+    .performer-year {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.62rem;
+      color: #4caf78;
+    }
+
+    /* ── MAYBE / WATCH LIST ── */
+    .name-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+    .name-chip {
+      font-size: 0.78rem;
+      color: rgba(245, 234, 214, 0.55);
+      border: 1px solid rgba(212, 160, 48, 0.1);
+      padding: 0.2rem 0.55rem;
+    }
+
+    /* ── YEAR DISTRIBUTION ── */
+    .year-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+    }
+    .year-chip {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem;
+      border: 1px solid rgba(212, 160, 48, 0.2);
+      padding: 0.25rem 0.6rem;
+      color: var(--gold);
+      background: rgba(212, 160, 48, 0.04);
+    }
+    .year-chip .year-cnt {
+      margin-left: 0.3rem;
+      color: var(--muted);
+      font-size: 0.62rem;
+    }
+
+    /* ── FOOTER ── */
+    .page-footer {
+      text-align: center;
+      margin-top: 4rem;
+      border-top: 1px solid rgba(212, 160, 48, 0.1);
+      padding-top: 1.5rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      color: rgba(122, 106, 79, 0.4);
+    }
+
+    /* ── MOBILE ── */
+    @media (max-width: 560px) {
+      main { padding: 2rem 1rem 4rem; }
+      .bar-row { grid-template-columns: 5.5rem 1fr 3.5rem; gap: 0.5rem; }
+      .bar-label { font-size: 0.76rem; }
+      header { padding: 0.8rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="nav-logo">HSPMC ✦ HAINAMI 2026</div>
+    <div class="nav-right">
+      <a href="index.html" class="back-link">← 回主頁</a>
+      <button class="refresh-btn" onclick="loadData()">↻ 重新整理</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="page-title-block">
+      <div class="page-label">LIVE STATS ✦ 即時統計</div>
+      <h1 class="page-title">報名回應<em>現況</em></h1>
+      <div class="last-updated">
+        <span class="status-dot loading" id="statusDot"></span>
+        <span id="lastUpdatedText">載入中…</span>
+        <span style="margin-left:0.5rem; color:rgba(122,106,79,0.5);">· 每 60 秒自動更新</span>
+      </div>
+    </div>
+
+    <div class="error-block" id="errorBlock">
+      ⚠ 無法讀取試算表資料。請確認 Google 試算表已設為「知道連結的人可以檢視」，然後按重新整理。
+    </div>
+
+    <div id="dashboard" style="display:none;">
+
+      <!-- SUMMARY CARDS -->
+      <div class="summary-grid" id="summaryGrid">
+        <div class="summary-card">
+          <div class="summary-num total" id="numTotal">—</div>
+          <div class="summary-label">TOTAL</div>
+          <div class="summary-sub">總填寫人數</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-num confirm" id="numConfirm">—</div>
+          <div class="summary-label">CONFIRM</div>
+          <div class="summary-sub">確定要表演</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-num maybe" id="numMaybe">—</div>
+          <div class="summary-label">MAYBE</div>
+          <div class="summary-sub">考慮中</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-num watch" id="numWatch">—</div>
+          <div class="summary-label">WATCH</div>
+          <div class="summary-sub">只來看</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-num no" id="numNo">—</div>
+          <div class="summary-label">NO</div>
+          <div class="summary-sub">今年不參加</div>
+        </div>
+      </div>
+
+      <!-- DATE VOTES -->
+      <div class="stat-section">
+        <div class="stat-section-head">
+          <span class="stat-section-title">演出日期票數</span>
+          <span class="stat-section-sub">（可複選，各選項獨立計算）</span>
+        </div>
+        <div class="stat-section-body" id="dateVotes"></div>
+      </div>
+
+      <!-- COST VOTES -->
+      <div class="stat-section">
+        <div class="stat-section-head">
+          <span class="stat-section-title">費用分攤偏好</span>
+          <span class="stat-section-sub">（已填寫者中）</span>
+        </div>
+        <div class="stat-section-body" id="costVotes"></div>
+      </div>
+
+      <!-- CONFIRMED PERFORMERS -->
+      <div class="stat-section">
+        <div class="stat-section-head">
+          <span class="stat-section-title">確定參演名單</span>
+          <span id="confirmedCount" class="stat-section-sub"></span>
+        </div>
+        <div class="stat-section-body">
+          <div class="performers-grid" id="confirmedList"></div>
+        </div>
+      </div>
+
+      <!-- MAYBE LIST -->
+      <div class="stat-section">
+        <div class="stat-section-head">
+          <span class="stat-section-title">考慮中</span>
+          <span id="maybeCount" class="stat-section-sub"></span>
+        </div>
+        <div class="stat-section-body">
+          <div class="name-list" id="maybeList"></div>
+        </div>
+      </div>
+
+      <!-- YEAR DISTRIBUTION -->
+      <div class="stat-section">
+        <div class="stat-section-head">
+          <span class="stat-section-title">屆別分布</span>
+          <span class="stat-section-sub">（所有填寫者）</span>
+        </div>
+        <div class="stat-section-body">
+          <div class="year-chips" id="yearDist"></div>
+        </div>
+      </div>
+
+    </div><!-- /#dashboard -->
+
+    <div class="loading-block" id="loadingBlock">
+      <span class="status-dot loading"></span> LOADING DATA…
+    </div>
+
+    <div class="page-footer">
+      HSPMC ✦ HAINAMI 2026 ✦ STATS DASHBOARD · 資料來源：Google Sheets
+    </div>
+  </main>
+
+  <script>
+    const SHEET_ID = '1j5e8zqgT6OyyI1pwjSRes07FTlD6AIDaECtUgLI4TXM';
+
+    const DATE_LABELS = {
+      aug15_sat: '8/15（六）',
+      aug16_sun: '8/16（日）',
+      aug22_sat: '8/22（六）',
+      aug23_sun: '8/23（日）',
+    };
+    const COST_LABELS = {
+      equal:      '人頭平均分攤',
+      by_song:    '依演出曲數分攤',
+      no_opinion: '沒意見',
+    };
+
+    // ── fetch & parse (JSONP — works on file:// and https://) ──
+    function fetchSheetData() {
+      return new Promise((resolve, reject) => {
+        const cbName = '_gviz_' + Date.now();
+        const script = document.createElement('script');
+        script.src = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json;responseHandler:${cbName}`;
+
+        const timer = setTimeout(() => {
+          cleanup();
+          reject(new Error('Timeout'));
+        }, 12000);
+
+        function cleanup() {
+          clearTimeout(timer);
+          delete window[cbName];
+          script.remove();
+        }
+
+        window[cbName] = function(data) {
+          cleanup();
+          resolve(data);
+        };
+
+        script.onerror = () => { cleanup(); reject(new Error('Script load error')); };
+        document.head.appendChild(script);
+      });
+    }
+
+    // ── process rows ───────────────────────────────────────────
+    function processData(gvizData) {
+      const rows = gvizData.table.rows;
+      const stats = {
+        total: 0,
+        intention: { confirm: 0, maybe: 0, watch: 0, no: 0 },
+        dateVotes: { aug15_sat: 0, aug16_sun: 0, aug22_sat: 0, aug23_sun: 0 },
+        costVotes: { equal: 0, by_song: 0, no_opinion: 0 },
+        confirmed: [],   // { name, year }
+        maybes:    [],   // { name, year }
+        yearMap:   {},   // year → count
+      };
+
+      rows.forEach(row => {
+        const c = row.c;
+        if (!c) return;
+
+        const name      = c[1]  ? (c[1].v  || '').trim() : '';
+        const year      = c[2]  ? c[2].v  : null;
+        const intention = c[5]  ? (c[5].v  || '').trim() : '';
+        const dateRaw   = c[8]  ? (c[8].v  || '') : '';
+        const costRaw   = c[9]  ? (c[9].v  || '').trim() : '';
+
+        stats.total++;
+
+        // Intention
+        if (stats.intention[intention] !== undefined) {
+          stats.intention[intention]++;
+        }
+
+        // Date votes (comma-separated)
+        dateRaw.split(',').forEach(d => {
+          const key = d.trim();
+          if (stats.dateVotes[key] !== undefined) stats.dateVotes[key]++;
+        });
+
+        // Cost vote
+        if (stats.costVotes[costRaw] !== undefined) stats.costVotes[costRaw]++;
+
+        // Performer lists
+        const person = { name: name || '（無名）', year: year ? Math.round(year) : '?' };
+        if (intention === 'confirm') stats.confirmed.push(person);
+        if (intention === 'maybe')   stats.maybes.push(person);
+
+        // Year distribution (all)
+        if (year !== null) {
+          const y = Math.round(year);
+          stats.yearMap[y] = (stats.yearMap[y] || 0) + 1;
+        }
+      });
+
+      return stats;
+    }
+
+    // ── render ─────────────────────────────────────────────────
+    function renderBar(container, items, colorClass, totalForPct) {
+      const maxVal = Math.max(...Object.values(items), 1);
+      container.innerHTML = '';
+      Object.entries(items).forEach(([key, count]) => {
+        const pct      = totalForPct > 0 ? Math.round(count / totalForPct * 100) : 0;
+        const barWidth = Math.round(count / maxVal * 100);
+        const label    = DATE_LABELS[key] || COST_LABELS[key] || key;
+
+        const row = document.createElement('div');
+        row.className = 'bar-row';
+        row.innerHTML = `
+          <div class="bar-label">${label}</div>
+          <div class="bar-track">
+            <div class="bar-fill ${colorClass}" style="width:0%" data-width="${barWidth}%"></div>
+          </div>
+          <div class="bar-count"><strong>${count}</strong> (${pct}%)</div>
+        `;
+        container.appendChild(row);
+      });
+      // animate fills after paint
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          container.querySelectorAll('.bar-fill').forEach(el => {
+            el.style.width = el.dataset.width;
+          });
+        });
+      });
+    }
+
+    function findWinner(obj) {
+      return Object.entries(obj).sort((a, b) => b[1] - a[1])[0]?.[0];
+    }
+
+    function render(stats) {
+      // Summary cards
+      document.getElementById('numTotal').textContent   = stats.total;
+      document.getElementById('numConfirm').textContent = stats.intention.confirm;
+      document.getElementById('numMaybe').textContent   = stats.intention.maybe;
+      document.getElementById('numWatch').textContent   = stats.intention.watch;
+      document.getElementById('numNo').textContent      = stats.intention.no;
+
+      // Date votes — annotate winner
+      const dateWinner = findWinner(stats.dateVotes);
+      renderBar(document.getElementById('dateVotes'), stats.dateVotes, 'date', stats.total);
+      // Add winner badge
+      document.querySelectorAll('#dateVotes .bar-row').forEach(row => {
+        const labelEl = row.querySelector('.bar-label');
+        const labelText = labelEl.textContent.trim();
+        const key = Object.keys(DATE_LABELS).find(k => DATE_LABELS[k] === labelText);
+        if (key && key === dateWinner && stats.dateVotes[dateWinner] > 0) {
+          labelEl.innerHTML += `<span class="winner-badge">領先</span>`;
+        }
+      });
+
+      // Cost votes
+      const costWinner = findWinner(stats.costVotes);
+      const costTotal  = Object.values(stats.costVotes).reduce((a, b) => a + b, 0);
+      renderBar(document.getElementById('costVotes'), stats.costVotes, 'cost', costTotal);
+      document.querySelectorAll('#costVotes .bar-row').forEach(row => {
+        const labelEl = row.querySelector('.bar-label');
+        const labelText = labelEl.textContent.trim();
+        const key = Object.keys(COST_LABELS).find(k => COST_LABELS[k] === labelText);
+        if (key && key === costWinner && stats.costVotes[costWinner] > 0) {
+          labelEl.innerHTML += `<span class="winner-badge">領先</span>`;
+        }
+      });
+
+      // Confirmed list
+      const confirmedEl = document.getElementById('confirmedList');
+      confirmedEl.innerHTML = '';
+      stats.confirmed.sort((a, b) => b.year - a.year);
+      if (stats.confirmed.length === 0) {
+        confirmedEl.innerHTML = '<span style="color:var(--muted);font-size:0.82rem;">目前尚無確定參演者</span>';
+      } else {
+        stats.confirmed.forEach(p => {
+          const tag = document.createElement('div');
+          tag.className = 'performer-tag';
+          tag.innerHTML = `${p.name} <span class="performer-year">${p.year}屆</span>`;
+          confirmedEl.appendChild(tag);
+        });
+      }
+      document.getElementById('confirmedCount').textContent =
+        `共 ${stats.confirmed.length} 人`;
+
+      // Maybe list
+      const maybeEl = document.getElementById('maybeList');
+      maybeEl.innerHTML = '';
+      if (stats.maybes.length === 0) {
+        maybeEl.innerHTML = '<span style="color:var(--muted);font-size:0.82rem;">目前無考慮中的人</span>';
+      } else {
+        stats.maybes.sort((a, b) => b.year - a.year).forEach(p => {
+          const chip = document.createElement('div');
+          chip.className = 'name-chip';
+          chip.textContent = `${p.name} (${p.year}屆)`;
+          maybeEl.appendChild(chip);
+        });
+      }
+      document.getElementById('maybeCount').textContent = `共 ${stats.maybes.length} 人`;
+
+      // Year distribution
+      const yearEl = document.getElementById('yearDist');
+      yearEl.innerHTML = '';
+      const sortedYears = Object.entries(stats.yearMap).sort((a, b) => b[0] - a[0]);
+      if (sortedYears.length === 0) {
+        yearEl.innerHTML = '<span style="color:var(--muted);font-size:0.82rem;">—</span>';
+      } else {
+        sortedYears.forEach(([yr, cnt]) => {
+          const chip = document.createElement('div');
+          chip.className = 'year-chip';
+          chip.innerHTML = `第 ${yr} 屆<span class="year-cnt">× ${cnt}</span>`;
+          yearEl.appendChild(chip);
+        });
+      }
+    }
+
+    // ── load & update ──────────────────────────────────────────
+    async function loadData() {
+      const dot  = document.getElementById('statusDot');
+      const text = document.getElementById('lastUpdatedText');
+      const loadingBlock  = document.getElementById('loadingBlock');
+      const dashboard     = document.getElementById('dashboard');
+      const errorBlock    = document.getElementById('errorBlock');
+
+      dot.className  = 'status-dot loading';
+      text.textContent = '更新中…';
+      errorBlock.classList.remove('show');
+
+      try {
+        const raw   = await fetchSheetData();
+        const stats = processData(raw);
+
+        render(stats);
+
+        loadingBlock.style.display = 'none';
+        dashboard.style.display    = 'block';
+        dot.className  = 'status-dot';  // green pulse
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        text.textContent = `最後更新：${timeStr}`;
+      } catch (err) {
+        console.error('Stats fetch error:', err);
+        dot.className  = 'status-dot error';
+        text.textContent = '載入失敗';
+        errorBlock.classList.add('show');
+        loadingBlock.style.display = 'none';
+        if (dashboard.style.display === 'none') {
+          // show error in place of dashboard only on first load
+        }
+      }
+    }
+
+    // Auto-refresh every 60 seconds
+    loadData();
+    setInterval(loadData, 60_000);
+  </script>
+</body>
+</html>
